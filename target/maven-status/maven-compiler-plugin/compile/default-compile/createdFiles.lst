@@ -1,0 +1,16 @@
+model\HistoricoBusca.class
+view\LoginFrame$1.class
+controller\ControllerLogin.class
+DAO\Conexao.class
+DAO\UsuarioDAO.class
+model\Musica.class
+view\LoginFrame$2.class
+model\Usuario.class
+view\LoginFrame$3.class
+view\CadastroFrame.class
+model\Artista.class
+model\Playlist.class
+view\CadastroFrame$2.class
+view\CadastroFrame$1.class
+view\LoginFrame.class
+main\main.class
