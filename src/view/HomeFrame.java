@@ -4,6 +4,10 @@
  */
 package view;
 
+import controller.ControllerMusica;
+import java.util.List;
+import model.Musica;
+
 /**
  *
  * @author Junior
@@ -15,6 +19,7 @@ public class HomeFrame extends javax.swing.JFrame {
      */
     public HomeFrame() {
         initComponents();
+        cm = new ControllerMusica(this);
     }
 
     /**
@@ -26,31 +31,149 @@ public class HomeFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        Buscar = new javax.swing.JPanel();
+        txt_nome_buscar = new javax.swing.JTextField();
+        bt_buscar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txt_resultado = new javax.swing.JTextArea();
+        lbl_buscar_home = new javax.swing.JLabel();
+        Curtidas = new javax.swing.JPanel();
+        Descurtidas = new javax.swing.JPanel();
+        Historico = new javax.swing.JPanel();
+        Playlists = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Homemomoemoemoemoemoe");
+        bt_buscar.setText("Buscar");
+        bt_buscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_buscarActionPerformed(evt);
+            }
+        });
+
+        txt_resultado.setColumns(20);
+        txt_resultado.setRows(5);
+        jScrollPane1.setViewportView(txt_resultado);
+
+        lbl_buscar_home.setText("Buscar Músicas");
+
+        javax.swing.GroupLayout BuscarLayout = new javax.swing.GroupLayout(Buscar);
+        Buscar.setLayout(BuscarLayout);
+        BuscarLayout.setHorizontalGroup(
+            BuscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(BuscarLayout.createSequentialGroup()
+                .addGroup(BuscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(BuscarLayout.createSequentialGroup()
+                        .addGap(404, 404, 404)
+                        .addComponent(bt_buscar))
+                    .addGroup(BuscarLayout.createSequentialGroup()
+                        .addGap(274, 274, 274)
+                        .addComponent(txt_nome_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(BuscarLayout.createSequentialGroup()
+                        .addGap(400, 400, 400)
+                        .addComponent(lbl_buscar_home))
+                    .addGroup(BuscarLayout.createSequentialGroup()
+                        .addGap(227, 227, 227)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(278, Short.MAX_VALUE))
+        );
+        BuscarLayout.setVerticalGroup(
+            BuscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(BuscarLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(lbl_buscar_home)
+                .addGap(18, 18, 18)
+                .addComponent(txt_nome_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40)
+                .addComponent(bt_buscar)
+                .addGap(52, 52, 52)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(86, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Buscar", Buscar);
+
+        javax.swing.GroupLayout CurtidasLayout = new javax.swing.GroupLayout(Curtidas);
+        Curtidas.setLayout(CurtidasLayout);
+        CurtidasLayout.setHorizontalGroup(
+            CurtidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 940, Short.MAX_VALUE)
+        );
+        CurtidasLayout.setVerticalGroup(
+            CurtidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 525, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Curtidas", Curtidas);
+
+        Descurtidas.setVerifyInputWhenFocusTarget(false);
+
+        javax.swing.GroupLayout DescurtidasLayout = new javax.swing.GroupLayout(Descurtidas);
+        Descurtidas.setLayout(DescurtidasLayout);
+        DescurtidasLayout.setHorizontalGroup(
+            DescurtidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 940, Short.MAX_VALUE)
+        );
+        DescurtidasLayout.setVerticalGroup(
+            DescurtidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 525, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Descurtidas", Descurtidas);
+
+        javax.swing.GroupLayout HistoricoLayout = new javax.swing.GroupLayout(Historico);
+        Historico.setLayout(HistoricoLayout);
+        HistoricoLayout.setHorizontalGroup(
+            HistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 940, Short.MAX_VALUE)
+        );
+        HistoricoLayout.setVerticalGroup(
+            HistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 525, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Historico", Historico);
+
+        javax.swing.GroupLayout PlaylistsLayout = new javax.swing.GroupLayout(Playlists);
+        Playlists.setLayout(PlaylistsLayout);
+        PlaylistsLayout.setHorizontalGroup(
+            PlaylistsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 940, Short.MAX_VALUE)
+        );
+        PlaylistsLayout.setVerticalGroup(
+            PlaylistsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 525, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Playlists", Playlists);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(125, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(104, 104, 104))
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(122, 122, 122)
-                .addComponent(jLabel1)
-                .addContainerGap(162, Short.MAX_VALUE))
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void bt_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_buscarActionPerformed
+        String busca = txt_nome_buscar.getText();
+        List<Musica> musicas = cm.buscarMusica(busca);
+        for (Musica m : musicas) {
+            txt_resultado.append(
+            m.getId() + " - " +
+            m.getNome() + " (" +
+            m.getGenero() + ") - " + "\n"
+        );
+    }
+        
+    }//GEN-LAST:event_bt_buscarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -87,8 +210,21 @@ public class HomeFrame extends javax.swing.JFrame {
             }
         });
     }
+    
+    
+    private ControllerMusica cm;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel Buscar;
+    private javax.swing.JPanel Curtidas;
+    private javax.swing.JPanel Descurtidas;
+    private javax.swing.JPanel Historico;
+    private javax.swing.JPanel Playlists;
+    private javax.swing.JButton bt_buscar;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JLabel lbl_buscar_home;
+    private javax.swing.JTextField txt_nome_buscar;
+    private javax.swing.JTextArea txt_resultado;
     // End of variables declaration//GEN-END:variables
 }
