@@ -26,10 +26,15 @@ public class MusicaDAO {
     
     public List<Musica> buscarMusica(String nome) throws SQLException {
         List<Musica> lista = new ArrayList<>();
-        String sql = "SELECT m.id, m.nome AS musica_nome, m.genero, a.id AS artista_id, a.nome AS artista_nome " +
+        String sql = "SELECT m.id, m.nome AS musica_nome, m.genero, " +
+                     "a.id AS artista_id, a.nome AS artista_nome, " +
+                     "COUNT(CASE WHEN c.status = true THEN 1 END) AS curtidas, " +
+                     "COUNT(CASE WHEN c.status = false THEN 1 END) AS descurtidas " +
                      "FROM musicas m " +
                      "JOIN artistas a ON m.artista_id = a.id " +
-                     "WHERE m.nome ILIKE ?";
+                     "LEFT JOIN curtidas c ON m.id = c.musica_id " +
+                     "WHERE m.nome ILIKE ? " +
+                     "GROUP BY m.id, m.nome, m.genero, a.id, a.nome";
 
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setString(1, "%" + nome + "%");
@@ -40,10 +45,14 @@ public class MusicaDAO {
             m.setId(rs.getInt("id"));
             m.setNome(rs.getString("musica_nome"));
             m.setGenero(rs.getString("genero"));
+            m.setCurtidas(rs.getInt("curtidas"));
+            m.setDescurtidas(rs.getInt("descurtidas"));
 
             Artista a = new Artista();
             a.setId(rs.getInt("artista_id"));
             a.setNome(rs.getString("artista_nome"));
+            
+            
 
             m.setArtista(a);
             lista.add(m);

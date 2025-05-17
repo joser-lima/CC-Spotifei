@@ -4,11 +4,14 @@
  */
 package view;
 
+import controller.ControllerCurtida;
 import controller.ControllerMusica;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Musica;
+import model.Usuario;
+
 
 /**
  *
@@ -19,7 +22,7 @@ public class HomeFrame extends javax.swing.JFrame {
     /**
      * Creates new form Home
      */
-    public HomeFrame() {
+    public HomeFrame(Usuario usuarioLogado) {
         initComponents();
         DefaultTableModel modelo = new DefaultTableModel();
         
@@ -31,6 +34,7 @@ public class HomeFrame extends javax.swing.JFrame {
         modelo.addColumn("Descurtidas");
 
         tbl_musicas.setModel(modelo);
+        this.usuarioLogado = usuarioLogado;
         cm = new ControllerMusica(this);
     }
 
@@ -50,6 +54,8 @@ public class HomeFrame extends javax.swing.JFrame {
         lbl_buscar_home = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbl_musicas = new javax.swing.JTable();
+        bt_curtir = new javax.swing.JButton();
+        bt_descurtir = new javax.swing.JButton();
         Curtidas = new javax.swing.JPanel();
         Descurtidas = new javax.swing.JPanel();
         Historico = new javax.swing.JPanel();
@@ -77,7 +83,26 @@ public class HomeFrame extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tbl_musicas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_musicasMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tbl_musicas);
+
+        bt_curtir.setText("👍");
+        bt_curtir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_curtirActionPerformed(evt);
+            }
+        });
+
+        bt_descurtir.setText("👎");
+        bt_descurtir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_descurtirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout BuscarLayout = new javax.swing.GroupLayout(Buscar);
         Buscar.setLayout(BuscarLayout);
@@ -96,7 +121,12 @@ public class HomeFrame extends javax.swing.JFrame {
                         .addComponent(lbl_buscar_home))
                     .addGroup(BuscarLayout.createSequentialGroup()
                         .addGap(154, 154, 154)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 578, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 578, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(BuscarLayout.createSequentialGroup()
+                        .addGap(366, 366, 366)
+                        .addComponent(bt_curtir)
+                        .addGap(86, 86, 86)
+                        .addComponent(bt_descurtir)))
                 .addContainerGap(208, Short.MAX_VALUE))
         );
         BuscarLayout.setVerticalGroup(
@@ -108,9 +138,13 @@ public class HomeFrame extends javax.swing.JFrame {
                 .addComponent(txt_nome_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40)
                 .addComponent(bt_buscar)
-                .addGap(39, 39, 39)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(146, Short.MAX_VALUE))
+                .addGap(26, 26, 26)
+                .addGroup(BuscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bt_curtir)
+                    .addComponent(bt_descurtir))
+                .addContainerGap(106, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Buscar", Buscar);
@@ -123,7 +157,7 @@ public class HomeFrame extends javax.swing.JFrame {
         );
         CurtidasLayout.setVerticalGroup(
             CurtidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 582, Short.MAX_VALUE)
+            .addGap(0, 570, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Curtidas", Curtidas);
@@ -138,7 +172,7 @@ public class HomeFrame extends javax.swing.JFrame {
         );
         DescurtidasLayout.setVerticalGroup(
             DescurtidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 582, Short.MAX_VALUE)
+            .addGap(0, 570, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Descurtidas", Descurtidas);
@@ -151,7 +185,7 @@ public class HomeFrame extends javax.swing.JFrame {
         );
         HistoricoLayout.setVerticalGroup(
             HistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 582, Short.MAX_VALUE)
+            .addGap(0, 570, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Historico", Historico);
@@ -164,7 +198,7 @@ public class HomeFrame extends javax.swing.JFrame {
         );
         PlaylistsLayout.setVerticalGroup(
             PlaylistsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 582, Short.MAX_VALUE)
+            .addGap(0, 570, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Playlists", Playlists);
@@ -177,7 +211,10 @@ public class HomeFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTabbedPane1)
+                .addContainerGap())
         );
 
         pack();
@@ -212,44 +249,93 @@ public class HomeFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_bt_buscarActionPerformed
 
+    private void bt_curtirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_curtirActionPerformed
+        int linha = tbl_musicas.getSelectedRow();
+
+        if (linha != -1) {
+            int musicaId = (int) tbl_musicas.getValueAt(linha, 0); // coluna 0 = ID
+            int usuarioId = usuarioLogado.getId(); // ou como você estiver armazenando o usuário
+
+            ControllerCurtida.curtir(usuarioId, musicaId);
+            JOptionPane.showMessageDialog(this, "Música curtida com sucesso!");
+            
+            bt_buscar.doClick();
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione uma música na tabela primeiro.");
+        }
+    }//GEN-LAST:event_bt_curtirActionPerformed
+
+    private void bt_descurtirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_descurtirActionPerformed
+        int linha = tbl_musicas.getSelectedRow();
+
+        if (linha != -1) {
+            int musicaId = (int) tbl_musicas.getValueAt(linha, 0); 
+            int usuarioId = usuarioLogado.getId(); 
+
+            ControllerCurtida.descurtir(usuarioId, musicaId);
+            JOptionPane.showMessageDialog(this, "Música descurtida.");
+            
+            bt_buscar.doClick();
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione uma música na tabela primeiro.");
+        }
+    }//GEN-LAST:event_bt_descurtirActionPerformed
+
+    private void tbl_musicasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_musicasMouseClicked
+        int linha = tbl_musicas.getSelectedRow();
+        if (linha != -1) {
+            int musicaId = (int) tbl_musicas.getValueAt(linha, 0);
+            int usuarioId = usuarioLogado.getId();
+
+            boolean curtiu = ControllerCurtida.usuarioCurtiu(usuarioId, musicaId);
+
+            if (curtiu) {
+                JOptionPane.showMessageDialog(this, "❤️ Você já curtiu esta música!");
+            }
+        }
+    }//GEN-LAST:event_tbl_musicasMouseClicked
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(HomeFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(HomeFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(HomeFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(HomeFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new HomeFrame().setVisible(true);
-            }
-        });
-    }
+    
+//Comentando o main pra nao ser possivel entrar na home sem um usuario
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(HomeFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(HomeFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(HomeFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(HomeFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new HomeFrame().setVisible(true);
+//            }
+//        });
+//    }
     
     
     private ControllerMusica cm;
+    private Usuario usuarioLogado;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Buscar;
@@ -258,6 +344,8 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JPanel Historico;
     private javax.swing.JPanel Playlists;
     private javax.swing.JButton bt_buscar;
+    private javax.swing.JButton bt_curtir;
+    private javax.swing.JButton bt_descurtir;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lbl_buscar_home;

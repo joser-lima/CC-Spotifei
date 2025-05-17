@@ -35,7 +35,7 @@ public class ControllerCadastro {
             UsuarioDAO  dao = new UsuarioDAO(conn);
             dao.inserir(user);
             JOptionPane.showMessageDialog(view, "Usuário Cadastrado!");
-            HomeFrame hf = new HomeFrame();
+            HomeFrame hf = new HomeFrame(user);
             hf.setVisible(true);
             view.setVisible(false); 
             conn.close();

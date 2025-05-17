@@ -40,17 +40,12 @@ public class ControllerLogin {
                                                 "Login efetuado!",
                                                 "Aviso",
                                                 JOptionPane.INFORMATION_MESSAGE);
-                String usuario = res.getString("usuario");
-                String senha = res.getString("senha");
-                HomeFrame hf = new HomeFrame();
+                int id = res.getInt("Id");
+                user.setId(id);
+                HomeFrame hf = new HomeFrame(user);
                 hf.setVisible(true);
                 view.setVisible(false);
                 
-//                Colocar a home aqui
-//                Usuario user2 = new Usuario(nome, usuario, senha);
-//                AltExcFrame aec = new AltExcFrame(aluno2);
-//                aec.setVisible(true);
-//                view.setVisible(false);
             }else{
                 JOptionPane.showMessageDialog(view,
                                                 "Login não efetuado!",
