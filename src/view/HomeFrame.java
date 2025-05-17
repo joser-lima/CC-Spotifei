@@ -6,6 +6,8 @@ package view;
 
 import controller.ControllerMusica;
 import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import model.Musica;
 
 /**
@@ -19,6 +21,16 @@ public class HomeFrame extends javax.swing.JFrame {
      */
     public HomeFrame() {
         initComponents();
+        DefaultTableModel modelo = new DefaultTableModel();
+        
+        modelo.addColumn("ID");
+        modelo.addColumn("Nome");
+        modelo.addColumn("Gênero");
+        modelo.addColumn("Artista");
+        modelo.addColumn("Curtidas");
+        modelo.addColumn("Descurtidas");
+
+        tbl_musicas.setModel(modelo);
         cm = new ControllerMusica(this);
     }
 
@@ -35,9 +47,9 @@ public class HomeFrame extends javax.swing.JFrame {
         Buscar = new javax.swing.JPanel();
         txt_nome_buscar = new javax.swing.JTextField();
         bt_buscar = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txt_resultado = new javax.swing.JTextArea();
         lbl_buscar_home = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tbl_musicas = new javax.swing.JTable();
         Curtidas = new javax.swing.JPanel();
         Descurtidas = new javax.swing.JPanel();
         Historico = new javax.swing.JPanel();
@@ -52,11 +64,20 @@ public class HomeFrame extends javax.swing.JFrame {
             }
         });
 
-        txt_resultado.setColumns(20);
-        txt_resultado.setRows(5);
-        jScrollPane1.setViewportView(txt_resultado);
-
         lbl_buscar_home.setText("Buscar Músicas");
+
+        tbl_musicas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(tbl_musicas);
 
         javax.swing.GroupLayout BuscarLayout = new javax.swing.GroupLayout(Buscar);
         Buscar.setLayout(BuscarLayout);
@@ -74,9 +95,9 @@ public class HomeFrame extends javax.swing.JFrame {
                         .addGap(400, 400, 400)
                         .addComponent(lbl_buscar_home))
                     .addGroup(BuscarLayout.createSequentialGroup()
-                        .addGap(227, 227, 227)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(278, Short.MAX_VALUE))
+                        .addGap(154, 154, 154)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 578, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(208, Short.MAX_VALUE))
         );
         BuscarLayout.setVerticalGroup(
             BuscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -87,9 +108,9 @@ public class HomeFrame extends javax.swing.JFrame {
                 .addComponent(txt_nome_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40)
                 .addComponent(bt_buscar)
-                .addGap(52, 52, 52)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(86, Short.MAX_VALUE))
+                .addGap(39, 39, 39)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(146, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Buscar", Buscar);
@@ -102,7 +123,7 @@ public class HomeFrame extends javax.swing.JFrame {
         );
         CurtidasLayout.setVerticalGroup(
             CurtidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 525, Short.MAX_VALUE)
+            .addGap(0, 582, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Curtidas", Curtidas);
@@ -117,7 +138,7 @@ public class HomeFrame extends javax.swing.JFrame {
         );
         DescurtidasLayout.setVerticalGroup(
             DescurtidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 525, Short.MAX_VALUE)
+            .addGap(0, 582, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Descurtidas", Descurtidas);
@@ -130,7 +151,7 @@ public class HomeFrame extends javax.swing.JFrame {
         );
         HistoricoLayout.setVerticalGroup(
             HistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 525, Short.MAX_VALUE)
+            .addGap(0, 582, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Historico", Historico);
@@ -143,7 +164,7 @@ public class HomeFrame extends javax.swing.JFrame {
         );
         PlaylistsLayout.setVerticalGroup(
             PlaylistsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 525, Short.MAX_VALUE)
+            .addGap(0, 582, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Playlists", Playlists);
@@ -165,13 +186,29 @@ public class HomeFrame extends javax.swing.JFrame {
     private void bt_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_buscarActionPerformed
         String busca = txt_nome_buscar.getText();
         List<Musica> musicas = cm.buscarMusica(busca);
+        
+        DefaultTableModel modelo = (DefaultTableModel) tbl_musicas.getModel();
+        modelo.setRowCount(0);
+        
+        
+        if (musicas == null || musicas.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "Música não encontrada!",
+                "Aviso",
+                JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
         for (Musica m : musicas) {
-            txt_resultado.append(
-            m.getId() + " - " +
-            m.getNome() + " (" +
-            m.getGenero() + ") - " + "\n"
-        );
-    }
+            modelo.addRow(new Object[] {
+                m.getId(),
+                m.getNome(),
+                m.getGenero(),
+                m.getArtista().getNome(),
+                m.getCurtidas(),
+                m.getDescurtidas()
+                    
+            });
+        }
         
     }//GEN-LAST:event_bt_buscarActionPerformed
 
@@ -221,10 +258,10 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JPanel Historico;
     private javax.swing.JPanel Playlists;
     private javax.swing.JButton bt_buscar;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lbl_buscar_home;
+    private javax.swing.JTable tbl_musicas;
     private javax.swing.JTextField txt_nome_buscar;
-    private javax.swing.JTextArea txt_resultado;
     // End of variables declaration//GEN-END:variables
 }
