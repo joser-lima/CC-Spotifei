@@ -4,6 +4,8 @@
  */
 package view;
 
+import DAO.Conexao;
+import DAO.HistoricoDAO;
 import controller.ControllerCurtida;
 import controller.ControllerMusica;
 import java.util.List;
@@ -11,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Musica;
 import model.Usuario;
+import java.sql.*;
 
 
 /**
@@ -50,8 +53,14 @@ public class HomeFrame extends javax.swing.JFrame {
         tableDescurtidas.addColumn("Nome");
         tableDescurtidas.addColumn("Gênero");
         tableDescurtidas.addColumn("Artista");
-
         tbl_descurtidas.setModel(tableDescurtidas);
+        
+        DefaultTableModel tableHistorico = new DefaultTableModel();
+        tableHistorico.addColumn("ID");
+        tableHistorico.addColumn("Nome");
+        tableHistorico.addColumn("Gênero");
+        tableHistorico.addColumn("Artista");
+        tbl_historico.setModel(tableHistorico);
     }
 
     /**
@@ -72,6 +81,7 @@ public class HomeFrame extends javax.swing.JFrame {
         tbl_musicas = new javax.swing.JTable();
         bt_curtir = new javax.swing.JButton();
         bt_descurtir = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         Curtidas = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tbl_curtidas = new javax.swing.JTable();
@@ -83,6 +93,10 @@ public class HomeFrame extends javax.swing.JFrame {
         lbl_musicas_descurtidas = new javax.swing.JLabel();
         bt_atualizar_descurtidas = new javax.swing.JButton();
         Historico = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tbl_historico = new javax.swing.JTable();
+        bt_atualizar_historico = new javax.swing.JButton();
+        lbl_historico = new javax.swing.JLabel();
         Playlists = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -128,17 +142,14 @@ public class HomeFrame extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("Selecione a música que deseja curtir");
+
         javax.swing.GroupLayout BuscarLayout = new javax.swing.GroupLayout(Buscar);
         Buscar.setLayout(BuscarLayout);
         BuscarLayout.setHorizontalGroup(
             BuscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(BuscarLayout.createSequentialGroup()
                 .addGroup(BuscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(BuscarLayout.createSequentialGroup()
-                        .addGap(366, 366, 366)
-                        .addComponent(bt_curtir)
-                        .addGap(140, 140, 140)
-                        .addComponent(bt_descurtir))
                     .addGroup(BuscarLayout.createSequentialGroup()
                         .addGap(174, 174, 174)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 578, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -150,7 +161,15 @@ public class HomeFrame extends javax.swing.JFrame {
                         .addComponent(txt_nome_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(BuscarLayout.createSequentialGroup()
                         .addGap(419, 419, 419)
-                        .addComponent(lbl_buscar_home)))
+                        .addComponent(lbl_buscar_home))
+                    .addGroup(BuscarLayout.createSequentialGroup()
+                        .addGap(369, 369, 369)
+                        .addComponent(jLabel1))
+                    .addGroup(BuscarLayout.createSequentialGroup()
+                        .addGap(422, 422, 422)
+                        .addComponent(bt_curtir)
+                        .addGap(18, 18, 18)
+                        .addComponent(bt_descurtir)))
                 .addContainerGap(188, Short.MAX_VALUE))
         );
         BuscarLayout.setVerticalGroup(
@@ -164,11 +183,13 @@ public class HomeFrame extends javax.swing.JFrame {
                 .addComponent(bt_buscar)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
                 .addGroup(BuscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bt_curtir)
                     .addComponent(bt_descurtir))
-                .addContainerGap(106, Short.MAX_VALUE))
+                .addContainerGap(80, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Buscar", Buscar);
@@ -291,15 +312,60 @@ public class HomeFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Descurtidas", Descurtidas);
 
+        tbl_historico.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tbl_historico.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_historicoMouseClicked(evt);
+            }
+        });
+        jScrollPane5.setViewportView(tbl_historico);
+
+        bt_atualizar_historico.setText("Atualizar histórico");
+        bt_atualizar_historico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_atualizar_historicoActionPerformed(evt);
+            }
+        });
+
+        lbl_historico.setText("Histórico de pesquisa");
+
         javax.swing.GroupLayout HistoricoLayout = new javax.swing.GroupLayout(Historico);
         Historico.setLayout(HistoricoLayout);
         HistoricoLayout.setHorizontalGroup(
             HistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 940, Short.MAX_VALUE)
+            .addGroup(HistoricoLayout.createSequentialGroup()
+                .addGroup(HistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(HistoricoLayout.createSequentialGroup()
+                        .addGap(173, 173, 173)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 578, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(HistoricoLayout.createSequentialGroup()
+                        .addGap(404, 404, 404)
+                        .addComponent(lbl_historico))
+                    .addGroup(HistoricoLayout.createSequentialGroup()
+                        .addGap(397, 397, 397)
+                        .addComponent(bt_atualizar_historico)))
+                .addContainerGap(189, Short.MAX_VALUE))
         );
         HistoricoLayout.setVerticalGroup(
             HistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 570, Short.MAX_VALUE)
+            .addGroup(HistoricoLayout.createSequentialGroup()
+                .addGap(101, 101, 101)
+                .addComponent(lbl_historico)
+                .addGap(36, 36, 36)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addComponent(bt_atualizar_historico)
+                .addContainerGap(114, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Historico", Historico);
@@ -405,7 +471,19 @@ public class HomeFrame extends javax.swing.JFrame {
 
             });
         }
+        
+        try {
+            Connection conn = new Conexao().getConnection();
+            HistoricoDAO dao = new HistoricoDAO(conn);
 
+            for (Musica m : musicas) {
+                dao.inserir(usuarioLogado.getId(), m.getId());
+            }
+
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_bt_buscarActionPerformed
 
     private void tbl_curtidasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_curtidasMouseClicked
@@ -447,6 +525,33 @@ public class HomeFrame extends javax.swing.JFrame {
             });
         }
     }//GEN-LAST:event_bt_atualizar_descurtidasActionPerformed
+
+    private void tbl_historicoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_historicoMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tbl_historicoMouseClicked
+
+    private void bt_atualizar_historicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_atualizar_historicoActionPerformed
+        DefaultTableModel modelo = (DefaultTableModel) tbl_historico.getModel();
+        modelo.setRowCount(0); // limpa a tabela
+
+        try {
+            Connection conn = new Conexao().getConnection();
+            HistoricoDAO dao = new HistoricoDAO(conn);
+            List<Musica> historico = dao.listarHistorico(usuarioLogado.getId());
+            conn.close();
+
+            for (Musica m : historico) {
+                modelo.addRow(new Object[]{
+                    m.getId(),
+                    m.getNome(),
+                    m.getGenero(),
+                    m.getArtista().getNome()
+                });
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_bt_atualizar_historicoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -498,18 +603,23 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JPanel Playlists;
     private javax.swing.JButton bt_atualizar_curtidas;
     private javax.swing.JButton bt_atualizar_descurtidas;
+    private javax.swing.JButton bt_atualizar_historico;
     private javax.swing.JButton bt_buscar;
     private javax.swing.JButton bt_curtir;
     private javax.swing.JButton bt_descurtir;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lbl_buscar_home;
+    private javax.swing.JLabel lbl_historico;
     private javax.swing.JLabel lbl_musicas_curtidas;
     private javax.swing.JLabel lbl_musicas_descurtidas;
     private javax.swing.JTable tbl_curtidas;
     private javax.swing.JTable tbl_descurtidas;
+    private javax.swing.JTable tbl_historico;
     private javax.swing.JTable tbl_musicas;
     private javax.swing.JTextField txt_nome_buscar;
     // End of variables declaration//GEN-END:variables
