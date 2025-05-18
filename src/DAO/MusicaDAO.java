@@ -60,5 +60,66 @@ public class MusicaDAO {
 
         return lista;
     }
+    
+    
+    public List<Musica> musicasCurtidas(int usuarioId) throws SQLException {
+        List<Musica> lista = new ArrayList<>();
+
+        String sql = "SELECT m.id, m.nome, m.genero, a.id AS artista_id, a.nome AS artista_nome " +
+                     "FROM musicas m " +
+                     "JOIN artistas a ON m.artista_id = a.id " +
+                     "JOIN curtidas c ON m.id = c.musica_id " +
+                     "WHERE c.usuario_id = ? AND c.status = true";
+
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, usuarioId);
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            Musica m = new Musica();
+            m.setId(rs.getInt("id"));
+            m.setNome(rs.getString("nome"));
+            m.setGenero(rs.getString("genero"));
+
+            Artista a = new Artista();
+            a.setId(rs.getInt("artista_id"));
+            a.setNome(rs.getString("artista_nome"));
+            m.setArtista(a);
+
+            lista.add(m);
+        }
+
+        return lista;
+    }
+    
+    public List<Musica> musicasDescurtidas(int usuarioId) throws SQLException {
+        List<Musica> lista = new ArrayList<>();
+
+        String sql = "SELECT m.id, m.nome, m.genero, a.id AS artista_id, a.nome AS artista_nome " +
+                     "FROM musicas m " +
+                     "JOIN artistas a ON m.artista_id = a.id " +
+                     "JOIN curtidas c ON m.id = c.musica_id " +
+                     "WHERE c.usuario_id = ? AND c.status = false";
+
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, usuarioId);
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            Musica m = new Musica();
+            m.setId(rs.getInt("id"));
+            m.setNome(rs.getString("nome"));
+            m.setGenero(rs.getString("genero"));
+
+            Artista a = new Artista();
+            a.setId(rs.getInt("artista_id"));
+            a.setNome(rs.getString("artista_nome"));
+            m.setArtista(a);
+
+            lista.add(m);
+        }
+
+        return lista;
+    }
 } 
 

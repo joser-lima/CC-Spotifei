@@ -9,6 +9,7 @@ import model.Musica;
 import DAO.Conexao;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import view.HomeFrame;
@@ -41,5 +42,32 @@ public class ControllerMusica {
         }
         return lista;
     }
+    
+    public List<Musica> listarCurtidas(int usuarioId) {
+        
+        try {
+            Connection conn = new Conexao().getConnection();
+            MusicaDAO dao = new MusicaDAO(conn);
+            List<Musica> lista = dao.musicasCurtidas(usuarioId);
+            conn.close();
+            return lista;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+    
+        public List<Musica> listarDescurtidas(int usuarioId) {
+            try {
+                Connection conn = new Conexao().getConnection();
+                MusicaDAO dao = new MusicaDAO(conn);
+                List<Musica> lista = dao.musicasDescurtidas(usuarioId);
+                conn.close();
+                return lista;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return new ArrayList<>();
+            }
+        }
 }
 

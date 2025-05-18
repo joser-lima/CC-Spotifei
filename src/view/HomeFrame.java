@@ -24,18 +24,34 @@ public class HomeFrame extends javax.swing.JFrame {
      */
     public HomeFrame(Usuario usuarioLogado) {
         initComponents();
-        DefaultTableModel modelo = new DefaultTableModel();
-        
-        modelo.addColumn("ID");
-        modelo.addColumn("Nome");
-        modelo.addColumn("Gênero");
-        modelo.addColumn("Artista");
-        modelo.addColumn("Curtidas");
-        modelo.addColumn("Descurtidas");
 
-        tbl_musicas.setModel(modelo);
         this.usuarioLogado = usuarioLogado;
         cm = new ControllerMusica(this);
+        
+        DefaultTableModel tableMusicas = new DefaultTableModel();
+        
+        tableMusicas.addColumn("ID");
+        tableMusicas.addColumn("Nome");
+        tableMusicas.addColumn("Gênero");
+        tableMusicas.addColumn("Artista");
+        tableMusicas.addColumn("Curtidas");
+        tableMusicas.addColumn("Descurtidas");
+        tbl_musicas.setModel(tableMusicas);
+        
+        DefaultTableModel tableCurtidas = new DefaultTableModel();
+        tableCurtidas.addColumn("ID");
+        tableCurtidas.addColumn("Nome");
+        tableCurtidas.addColumn("Gênero");
+        tableCurtidas.addColumn("Artista");
+        tbl_curtidas.setModel(tableCurtidas);
+        
+        DefaultTableModel tableDescurtidas = new DefaultTableModel();
+        tableDescurtidas.addColumn("ID");
+        tableDescurtidas.addColumn("Nome");
+        tableDescurtidas.addColumn("Gênero");
+        tableDescurtidas.addColumn("Artista");
+
+        tbl_descurtidas.setModel(tableDescurtidas);
     }
 
     /**
@@ -57,7 +73,15 @@ public class HomeFrame extends javax.swing.JFrame {
         bt_curtir = new javax.swing.JButton();
         bt_descurtir = new javax.swing.JButton();
         Curtidas = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tbl_curtidas = new javax.swing.JTable();
+        lbl_musicas_curtidas = new javax.swing.JLabel();
+        bt_atualizar_curtidas = new javax.swing.JButton();
         Descurtidas = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tbl_descurtidas = new javax.swing.JTable();
+        lbl_musicas_descurtidas = new javax.swing.JLabel();
+        bt_atualizar_descurtidas = new javax.swing.JButton();
         Historico = new javax.swing.JPanel();
         Playlists = new javax.swing.JPanel();
 
@@ -111,23 +135,23 @@ public class HomeFrame extends javax.swing.JFrame {
             .addGroup(BuscarLayout.createSequentialGroup()
                 .addGroup(BuscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(BuscarLayout.createSequentialGroup()
-                        .addGap(404, 404, 404)
-                        .addComponent(bt_buscar))
-                    .addGroup(BuscarLayout.createSequentialGroup()
-                        .addGap(274, 274, 274)
-                        .addComponent(txt_nome_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(BuscarLayout.createSequentialGroup()
-                        .addGap(400, 400, 400)
-                        .addComponent(lbl_buscar_home))
-                    .addGroup(BuscarLayout.createSequentialGroup()
-                        .addGap(154, 154, 154)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 578, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(BuscarLayout.createSequentialGroup()
                         .addGap(366, 366, 366)
                         .addComponent(bt_curtir)
-                        .addGap(86, 86, 86)
-                        .addComponent(bt_descurtir)))
-                .addContainerGap(208, Short.MAX_VALUE))
+                        .addGap(140, 140, 140)
+                        .addComponent(bt_descurtir))
+                    .addGroup(BuscarLayout.createSequentialGroup()
+                        .addGap(174, 174, 174)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 578, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(BuscarLayout.createSequentialGroup()
+                        .addGap(423, 423, 423)
+                        .addComponent(bt_buscar))
+                    .addGroup(BuscarLayout.createSequentialGroup()
+                        .addGap(294, 294, 294)
+                        .addComponent(txt_nome_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(BuscarLayout.createSequentialGroup()
+                        .addGap(419, 419, 419)
+                        .addComponent(lbl_buscar_home)))
+                .addContainerGap(188, Short.MAX_VALUE))
         );
         BuscarLayout.setVerticalGroup(
             BuscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,30 +173,120 @@ public class HomeFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Buscar", Buscar);
 
+        tbl_curtidas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tbl_curtidas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_curtidasMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(tbl_curtidas);
+
+        lbl_musicas_curtidas.setText("Musicas curtidas");
+
+        bt_atualizar_curtidas.setText("Atualizar");
+        bt_atualizar_curtidas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_atualizar_curtidasActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout CurtidasLayout = new javax.swing.GroupLayout(Curtidas);
         Curtidas.setLayout(CurtidasLayout);
         CurtidasLayout.setHorizontalGroup(
             CurtidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 940, Short.MAX_VALUE)
+            .addGroup(CurtidasLayout.createSequentialGroup()
+                .addGroup(CurtidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(CurtidasLayout.createSequentialGroup()
+                        .addGap(172, 172, 172)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 578, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(CurtidasLayout.createSequentialGroup()
+                        .addGap(412, 412, 412)
+                        .addComponent(lbl_musicas_curtidas))
+                    .addGroup(CurtidasLayout.createSequentialGroup()
+                        .addGap(421, 421, 421)
+                        .addComponent(bt_atualizar_curtidas)))
+                .addContainerGap(190, Short.MAX_VALUE))
         );
         CurtidasLayout.setVerticalGroup(
             CurtidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 570, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CurtidasLayout.createSequentialGroup()
+                .addContainerGap(103, Short.MAX_VALUE)
+                .addComponent(lbl_musicas_curtidas)
+                .addGap(33, 33, 33)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addComponent(bt_atualizar_curtidas)
+                .addGap(119, 119, 119))
         );
 
         jTabbedPane1.addTab("Curtidas", Curtidas);
 
         Descurtidas.setVerifyInputWhenFocusTarget(false);
 
+        tbl_descurtidas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tbl_descurtidas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_descurtidasMouseClicked(evt);
+            }
+        });
+        jScrollPane4.setViewportView(tbl_descurtidas);
+
+        lbl_musicas_descurtidas.setText("Músicas descurtidas");
+
+        bt_atualizar_descurtidas.setText("Atualizar");
+        bt_atualizar_descurtidas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_atualizar_descurtidasActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout DescurtidasLayout = new javax.swing.GroupLayout(Descurtidas);
         Descurtidas.setLayout(DescurtidasLayout);
         DescurtidasLayout.setHorizontalGroup(
             DescurtidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 940, Short.MAX_VALUE)
+            .addGroup(DescurtidasLayout.createSequentialGroup()
+                .addGroup(DescurtidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(DescurtidasLayout.createSequentialGroup()
+                        .addGap(173, 173, 173)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 578, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(DescurtidasLayout.createSequentialGroup()
+                        .addGap(407, 407, 407)
+                        .addComponent(lbl_musicas_descurtidas))
+                    .addGroup(DescurtidasLayout.createSequentialGroup()
+                        .addGap(423, 423, 423)
+                        .addComponent(bt_atualizar_descurtidas)))
+                .addContainerGap(189, Short.MAX_VALUE))
         );
         DescurtidasLayout.setVerticalGroup(
             DescurtidasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 570, Short.MAX_VALUE)
+            .addGroup(DescurtidasLayout.createSequentialGroup()
+                .addGap(102, 102, 102)
+                .addComponent(lbl_musicas_descurtidas)
+                .addGap(34, 34, 34)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(bt_atualizar_descurtidas)
+                .addContainerGap(117, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Descurtidas", Descurtidas);
@@ -220,14 +334,59 @@ public class HomeFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void bt_descurtirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_descurtirActionPerformed
+        int linha = tbl_musicas.getSelectedRow();
+
+        if (linha != -1) {
+            int musicaId = (int) tbl_musicas.getValueAt(linha, 0);
+            int usuarioId = usuarioLogado.getId();
+
+            ControllerCurtida.descurtir(usuarioId, musicaId);
+            JOptionPane.showMessageDialog(this, "Música descurtida.");
+
+            bt_buscar.doClick();
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione uma música na tabela primeiro.");
+        }
+    }//GEN-LAST:event_bt_descurtirActionPerformed
+
+    private void bt_curtirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_curtirActionPerformed
+        int linha = tbl_musicas.getSelectedRow();
+
+        if (linha != -1) {
+            int musicaId = (int) tbl_musicas.getValueAt(linha, 0); // coluna 0 = ID
+            int usuarioId = usuarioLogado.getId(); // ou como você estiver armazenando o usuário
+
+            ControllerCurtida.curtir(usuarioId, musicaId);
+            JOptionPane.showMessageDialog(this, "Música curtida com sucesso!");
+
+            bt_buscar.doClick();
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecione uma música na tabela primeiro.");
+        }
+    }//GEN-LAST:event_bt_curtirActionPerformed
+
+    private void tbl_musicasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_musicasMouseClicked
+        int linha = tbl_musicas.getSelectedRow();
+        if (linha != -1) {
+            int musicaId = (int) tbl_musicas.getValueAt(linha, 0);
+            int usuarioId = usuarioLogado.getId();
+
+            boolean curtiu = ControllerCurtida.usuarioCurtiu(usuarioId, musicaId);
+
+            if (curtiu) {
+                JOptionPane.showMessageDialog(this, "❤️ Você já curtiu esta música!");
+            }
+        }
+    }//GEN-LAST:event_tbl_musicasMouseClicked
+
     private void bt_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_buscarActionPerformed
         String busca = txt_nome_buscar.getText();
         List<Musica> musicas = cm.buscarMusica(busca);
-        
+
         DefaultTableModel modelo = (DefaultTableModel) tbl_musicas.getModel();
         modelo.setRowCount(0);
-        
-        
+
         if (musicas == null || musicas.isEmpty()) {
             JOptionPane.showMessageDialog(this,
                 "Música não encontrada!",
@@ -243,57 +402,51 @@ public class HomeFrame extends javax.swing.JFrame {
                 m.getArtista().getNome(),
                 m.getCurtidas(),
                 m.getDescurtidas()
-                    
+
             });
         }
-        
+
     }//GEN-LAST:event_bt_buscarActionPerformed
 
-    private void bt_curtirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_curtirActionPerformed
-        int linha = tbl_musicas.getSelectedRow();
+    private void tbl_curtidasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_curtidasMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tbl_curtidasMouseClicked
 
-        if (linha != -1) {
-            int musicaId = (int) tbl_musicas.getValueAt(linha, 0); // coluna 0 = ID
-            int usuarioId = usuarioLogado.getId(); // ou como você estiver armazenando o usuário
+    private void bt_atualizar_curtidasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_atualizar_curtidasActionPerformed
+        DefaultTableModel modelo = (DefaultTableModel) tbl_curtidas.getModel();
+        modelo.setRowCount(0);
 
-            ControllerCurtida.curtir(usuarioId, musicaId);
-            JOptionPane.showMessageDialog(this, "Música curtida com sucesso!");
-            
-            bt_buscar.doClick();
-        } else {
-            JOptionPane.showMessageDialog(this, "Selecione uma música na tabela primeiro.");
+        List<Musica> curtidas = cm.listarCurtidas(usuarioLogado.getId());
+
+        for (Musica m : curtidas) {
+            modelo.addRow(new Object[]{
+                m.getId(),
+                m.getNome(),
+                m.getGenero(),
+                m.getArtista().getNome()
+            });
         }
-    }//GEN-LAST:event_bt_curtirActionPerformed
+    }//GEN-LAST:event_bt_atualizar_curtidasActionPerformed
 
-    private void bt_descurtirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_descurtirActionPerformed
-        int linha = tbl_musicas.getSelectedRow();
+    private void tbl_descurtidasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_descurtidasMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tbl_descurtidasMouseClicked
 
-        if (linha != -1) {
-            int musicaId = (int) tbl_musicas.getValueAt(linha, 0); 
-            int usuarioId = usuarioLogado.getId(); 
+    private void bt_atualizar_descurtidasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_atualizar_descurtidasActionPerformed
+        DefaultTableModel modelo = (DefaultTableModel) tbl_descurtidas.getModel();
+        modelo.setRowCount(0);
 
-            ControllerCurtida.descurtir(usuarioId, musicaId);
-            JOptionPane.showMessageDialog(this, "Música descurtida.");
-            
-            bt_buscar.doClick();
-        } else {
-            JOptionPane.showMessageDialog(this, "Selecione uma música na tabela primeiro.");
+        List<Musica> descurtidas = cm.listarDescurtidas(usuarioLogado.getId());
+
+        for (Musica m : descurtidas) {
+            modelo.addRow(new Object[]{
+                m.getId(),
+                m.getNome(),
+                m.getGenero(),
+                m.getArtista().getNome()
+            });
         }
-    }//GEN-LAST:event_bt_descurtirActionPerformed
-
-    private void tbl_musicasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_musicasMouseClicked
-        int linha = tbl_musicas.getSelectedRow();
-        if (linha != -1) {
-            int musicaId = (int) tbl_musicas.getValueAt(linha, 0);
-            int usuarioId = usuarioLogado.getId();
-
-            boolean curtiu = ControllerCurtida.usuarioCurtiu(usuarioId, musicaId);
-
-            if (curtiu) {
-                JOptionPane.showMessageDialog(this, "❤️ Você já curtiu esta música!");
-            }
-        }
-    }//GEN-LAST:event_tbl_musicasMouseClicked
+    }//GEN-LAST:event_bt_atualizar_descurtidasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -343,12 +496,20 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JPanel Descurtidas;
     private javax.swing.JPanel Historico;
     private javax.swing.JPanel Playlists;
+    private javax.swing.JButton bt_atualizar_curtidas;
+    private javax.swing.JButton bt_atualizar_descurtidas;
     private javax.swing.JButton bt_buscar;
     private javax.swing.JButton bt_curtir;
     private javax.swing.JButton bt_descurtir;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lbl_buscar_home;
+    private javax.swing.JLabel lbl_musicas_curtidas;
+    private javax.swing.JLabel lbl_musicas_descurtidas;
+    private javax.swing.JTable tbl_curtidas;
+    private javax.swing.JTable tbl_descurtidas;
     private javax.swing.JTable tbl_musicas;
     private javax.swing.JTextField txt_nome_buscar;
     // End of variables declaration//GEN-END:variables
