@@ -6,14 +6,18 @@ package view;
 
 import DAO.Conexao;
 import DAO.HistoricoDAO;
+import DAO.MusicaDAO;
+import DAO.PlaylistMusicaDAO;
 import controller.ControllerCurtida;
 import controller.ControllerMusica;
+import controller.ControllerPlaylist;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Musica;
 import model.Usuario;
 import java.sql.*;
+import model.Playlist;
 
 
 /**
@@ -30,6 +34,7 @@ public class HomeFrame extends javax.swing.JFrame {
 
         this.usuarioLogado = usuarioLogado;
         cm = new ControllerMusica(this);
+        cp = new ControllerPlaylist(usuarioLogado);
         
         DefaultTableModel tableMusicas = new DefaultTableModel();
         
@@ -61,6 +66,19 @@ public class HomeFrame extends javax.swing.JFrame {
         tableHistorico.addColumn("Gênero");
         tableHistorico.addColumn("Artista");
         tbl_historico.setModel(tableHistorico);
+        
+        DefaultTableModel tablePlaylists = new DefaultTableModel();
+        tablePlaylists.addColumn("ID");
+        tablePlaylists.addColumn("Nome");
+        tbl_playlists.setModel(tablePlaylists);
+        
+        DefaultTableModel tableMusicasPlaylist = new DefaultTableModel();
+        tableMusicasPlaylist.addColumn("ID");
+        tableMusicasPlaylist.addColumn("Nome");
+        tableMusicasPlaylist.addColumn("Gênero");
+        tableMusicasPlaylist.addColumn("Artista");
+        tbl_musicas_playlists.setModel(tableMusicasPlaylist);
+        
     }
 
     /**
@@ -98,6 +116,17 @@ public class HomeFrame extends javax.swing.JFrame {
         bt_atualizar_historico = new javax.swing.JButton();
         lbl_historico = new javax.swing.JLabel();
         Playlists = new javax.swing.JPanel();
+        lbl_nome_playlist = new javax.swing.JLabel();
+        txt_nome_playlist = new javax.swing.JTextField();
+        bt_criar_playlist = new javax.swing.JButton();
+        bt_editar_playlist = new javax.swing.JButton();
+        bt_excluir_playlist = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbl_playlists = new javax.swing.JTable();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        tbl_musicas_playlists = new javax.swing.JTable();
+        bt_adicionar_playlist = new javax.swing.JButton();
+        bt_remover_playlist = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -370,15 +399,125 @@ public class HomeFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Historico", Historico);
 
+        lbl_nome_playlist.setText("Nome: ");
+
+        bt_criar_playlist.setText("Criar");
+        bt_criar_playlist.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_criar_playlistActionPerformed(evt);
+            }
+        });
+
+        bt_editar_playlist.setText("Editar");
+        bt_editar_playlist.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_editar_playlistActionPerformed(evt);
+            }
+        });
+
+        bt_excluir_playlist.setText("Excluir");
+        bt_excluir_playlist.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_excluir_playlistActionPerformed(evt);
+            }
+        });
+
+        tbl_playlists.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tbl_playlists.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_playlistsMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbl_playlists);
+
+        tbl_musicas_playlists.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane6.setViewportView(tbl_musicas_playlists);
+
+        bt_adicionar_playlist.setText("Adicionar");
+        bt_adicionar_playlist.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_adicionar_playlistActionPerformed(evt);
+            }
+        });
+
+        bt_remover_playlist.setText("Remover");
+        bt_remover_playlist.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_remover_playlistActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout PlaylistsLayout = new javax.swing.GroupLayout(Playlists);
         Playlists.setLayout(PlaylistsLayout);
         PlaylistsLayout.setHorizontalGroup(
             PlaylistsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 940, Short.MAX_VALUE)
+            .addGroup(PlaylistsLayout.createSequentialGroup()
+                .addGroup(PlaylistsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PlaylistsLayout.createSequentialGroup()
+                        .addGroup(PlaylistsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(PlaylistsLayout.createSequentialGroup()
+                                .addGap(144, 144, 144)
+                                .addComponent(lbl_nome_playlist)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txt_nome_playlist, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PlaylistsLayout.createSequentialGroup()
+                                .addGap(50, 50, 50)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(26, 26, 26)
+                        .addGroup(PlaylistsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(PlaylistsLayout.createSequentialGroup()
+                                .addComponent(bt_criar_playlist)
+                                .addGap(18, 18, 18)
+                                .addComponent(bt_editar_playlist)
+                                .addGap(18, 18, 18)
+                                .addComponent(bt_excluir_playlist))
+                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(PlaylistsLayout.createSequentialGroup()
+                        .addGap(249, 249, 249)
+                        .addComponent(bt_adicionar_playlist)
+                        .addGap(199, 199, 199)
+                        .addComponent(bt_remover_playlist)))
+                .addContainerGap(134, Short.MAX_VALUE))
         );
         PlaylistsLayout.setVerticalGroup(
             PlaylistsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 570, Short.MAX_VALUE)
+            .addGroup(PlaylistsLayout.createSequentialGroup()
+                .addGap(99, 99, 99)
+                .addGroup(PlaylistsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_nome_playlist)
+                    .addComponent(txt_nome_playlist, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bt_criar_playlist)
+                    .addComponent(bt_editar_playlist)
+                    .addComponent(bt_excluir_playlist))
+                .addGap(87, 87, 87)
+                .addGroup(PlaylistsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGap(60, 60, 60)
+                .addGroup(PlaylistsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bt_adicionar_playlist)
+                    .addComponent(bt_remover_playlist))
+                .addContainerGap(73, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Playlists", Playlists);
@@ -552,6 +691,202 @@ public class HomeFrame extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }//GEN-LAST:event_bt_atualizar_historicoActionPerformed
+    
+    private void atualizarTabelaPlaylists() {
+        DefaultTableModel modelo = (DefaultTableModel) tbl_playlists.getModel();
+        modelo.setRowCount(0);
+
+        List<Playlist> playlists = cp.listarPlaylists();
+
+        for (Playlist p : playlists) {
+            modelo.addRow(new Object[]{p.getId(), p.getNome()});
+        }
+    }
+    
+    
+    
+    private void bt_criar_playlistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_criar_playlistActionPerformed
+        String nome = txt_nome_playlist.getText();
+
+        if (nome.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Digite um nome para a playlist.");
+            return;
+        }
+
+        cp.criarPlaylist(nome);
+        atualizarTabelaPlaylists();
+        txt_nome_playlist.setText("");
+    }//GEN-LAST:event_bt_criar_playlistActionPerformed
+
+    private void bt_editar_playlistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_editar_playlistActionPerformed
+        int linha = tbl_playlists.getSelectedRow();
+        String novoNome = txt_nome_playlist.getText();
+
+        if (linha == -1) {
+            JOptionPane.showMessageDialog(this, "Selecione uma playlist para editar.");
+            return;
+        }
+
+        if (novoNome.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Digite o novo nome da playlist.");
+            return;
+        }
+
+        int id = (int) tbl_playlists.getValueAt(linha, 0);
+
+        cp.editarPlaylist(id, novoNome);
+        atualizarTabelaPlaylists();
+        txt_nome_playlist.setText("");
+    }//GEN-LAST:event_bt_editar_playlistActionPerformed
+
+    private void bt_excluir_playlistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_excluir_playlistActionPerformed
+        int linha = tbl_playlists.getSelectedRow();
+
+        if (linha == -1) {
+            JOptionPane.showMessageDialog(this, "Selecione uma playlist para excluir.");
+            return;
+        }
+
+        int id = (int) tbl_playlists.getValueAt(linha, 0);
+
+        int confirmacao = JOptionPane.showConfirmDialog(this,
+                "Tem certeza que deseja excluir esta playlist?",
+                "Confirmação", JOptionPane.YES_NO_OPTION);
+
+        if (confirmacao == JOptionPane.YES_OPTION) {
+            cp.excluirPlaylist(id);
+            atualizarTabelaPlaylists();
+            txt_nome_playlist.setText("");
+        }
+    }//GEN-LAST:event_bt_excluir_playlistActionPerformed
+
+    private void tbl_playlistsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_playlistsMouseClicked
+        int linha = tbl_playlists.getSelectedRow();
+        if (linha == -1) return;
+
+        int playlistId = (int) tbl_playlists.getValueAt(linha, 0);
+
+        DefaultTableModel modelo = (DefaultTableModel) tbl_musicas_playlists.getModel();
+        modelo.setRowCount(0);
+
+        try {
+            Connection conn = new Conexao().getConnection();
+            PlaylistMusicaDAO dao = new PlaylistMusicaDAO(conn);
+            List<Musica> musicas = dao.listarPorPlaylist(playlistId);
+            conn.close();
+
+            for (Musica m : musicas) {
+                modelo.addRow(new Object[]{
+                    m.getId(),
+                    m.getNome(),
+                    m.getGenero(),
+                    m.getArtista().getNome()
+                });
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_tbl_playlistsMouseClicked
+
+    
+    private void preencherMusicasDaPlaylist(int playlistId) {
+        try {
+            Connection conn = new Conexao().getConnection();
+            PlaylistMusicaDAO dao = new PlaylistMusicaDAO(conn);
+            List<Musica> musicas = dao.listarPorPlaylist(playlistId);
+            conn.close();
+
+            DefaultTableModel modelo = (DefaultTableModel) tbl_musicas_playlists.getModel();
+            modelo.setRowCount(0);
+
+            for (Musica m : musicas) {
+                modelo.addRow(new Object[]{
+                    m.getId(),
+                    m.getNome(),
+                    m.getGenero(),
+                    m.getArtista().getNome()
+                });
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+    }
+}
+    
+    private void bt_adicionar_playlistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_adicionar_playlistActionPerformed
+        int linhaPlaylist = tbl_playlists.getSelectedRow();
+        if (linhaPlaylist == -1) {
+            JOptionPane.showMessageDialog(this, "Selecione uma playlist.");
+            return;
+        }
+
+        int playlistId = (int) tbl_playlists.getValueAt(linhaPlaylist, 0);
+
+        try {
+            Connection conn = new Conexao().getConnection();
+
+            MusicaDAO musicaDAO = new MusicaDAO(conn);
+            List<Musica> musicas = musicaDAO.buscarMusica("");
+
+            String[] opcoes = new String[musicas.size()];
+            for (int i = 0; i < musicas.size(); i++) {
+                opcoes[i] = musicas.get(i).getId() + " - " + musicas.get(i).getNome();
+            }
+
+            String selecionada = (String) JOptionPane.showInputDialog(
+                this,
+                "Selecione a música para adicionar à playlist:",
+                "Adicionar Música",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                opcoes,
+                opcoes[0]
+            );
+
+            if (selecionada != null) {
+                int musicaId = Integer.parseInt(selecionada.split(" - ")[0]);
+
+                PlaylistMusicaDAO dao = new PlaylistMusicaDAO(conn);
+                dao.adicionarMusica(playlistId, musicaId);
+
+                preencherMusicasDaPlaylist(playlistId);
+            }
+
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Erro ao adicionar música.");
+        }
+    }//GEN-LAST:event_bt_adicionar_playlistActionPerformed
+
+    private void bt_remover_playlistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_remover_playlistActionPerformed
+        int linhaPlaylist = tbl_playlists.getSelectedRow();
+        int linhaMusica = tbl_musicas_playlists.getSelectedRow();
+
+        if (linhaPlaylist == -1) {
+            JOptionPane.showMessageDialog(this, "Selecione uma playlist.");
+            return;
+        }
+
+        if (linhaMusica == -1) {
+            JOptionPane.showMessageDialog(this, "Selecione uma música para remover.");
+            return;
+        }
+
+        int playlistId = (int) tbl_playlists.getValueAt(linhaPlaylist, 0);
+        int musicaId = (int) tbl_musicas_playlists.getValueAt(linhaMusica, 0);
+
+        try {
+            Connection conn = new Conexao().getConnection();
+            PlaylistMusicaDAO dao = new PlaylistMusicaDAO(conn);
+            dao.removerMusica(playlistId, musicaId);
+            conn.close();
+
+            preencherMusicasDaPlaylist(playlistId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Erro ao remover música da playlist.");
+        }
+    }//GEN-LAST:event_bt_remover_playlistActionPerformed
 
     /**
      * @param args the command line arguments
@@ -594,6 +929,7 @@ public class HomeFrame extends javax.swing.JFrame {
     
     private ControllerMusica cm;
     private Usuario usuarioLogado;
+    private ControllerPlaylist cp;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Buscar;
@@ -601,26 +937,37 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JPanel Descurtidas;
     private javax.swing.JPanel Historico;
     private javax.swing.JPanel Playlists;
+    private javax.swing.JButton bt_adicionar_playlist;
     private javax.swing.JButton bt_atualizar_curtidas;
     private javax.swing.JButton bt_atualizar_descurtidas;
     private javax.swing.JButton bt_atualizar_historico;
     private javax.swing.JButton bt_buscar;
+    private javax.swing.JButton bt_criar_playlist;
     private javax.swing.JButton bt_curtir;
     private javax.swing.JButton bt_descurtir;
+    private javax.swing.JButton bt_editar_playlist;
+    private javax.swing.JButton bt_excluir_playlist;
+    private javax.swing.JButton bt_remover_playlist;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lbl_buscar_home;
     private javax.swing.JLabel lbl_historico;
     private javax.swing.JLabel lbl_musicas_curtidas;
     private javax.swing.JLabel lbl_musicas_descurtidas;
+    private javax.swing.JLabel lbl_nome_playlist;
     private javax.swing.JTable tbl_curtidas;
     private javax.swing.JTable tbl_descurtidas;
     private javax.swing.JTable tbl_historico;
     private javax.swing.JTable tbl_musicas;
+    private javax.swing.JTable tbl_musicas_playlists;
+    private javax.swing.JTable tbl_playlists;
     private javax.swing.JTextField txt_nome_buscar;
+    private javax.swing.JTextField txt_nome_playlist;
     // End of variables declaration//GEN-END:variables
 }
