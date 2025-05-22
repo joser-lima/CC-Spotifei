@@ -7,6 +7,7 @@ package controller;
 import DAO.Conexao;
 import DAO.UsuarioDAO;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import model.Usuario;
@@ -34,11 +35,19 @@ public class ControllerCadastro {
             Connection conn = conexao.getConnection();
             UsuarioDAO  dao = new UsuarioDAO(conn);
             dao.inserir(user);
-            JOptionPane.showMessageDialog(view, "Usuário Cadastrado!");
-            HomeFrame hf = new HomeFrame(user);
-            hf.setVisible(true);
-            view.setVisible(false); 
-            conn.close();
+            
+            ResultSet res = dao.consultar(user);
+            if(res.next()){
+                int id = res.getInt("id");
+                user.setId(id);
+            
+                JOptionPane.showMessageDialog(view, "Usuário Cadastrado!");
+
+                HomeFrame hf = new HomeFrame(user);
+                hf.setVisible(true);
+                view.setVisible(false); 
+                conn.close();
+            }
         } catch(SQLException e){
             JOptionPane.showMessageDialog(view, "Erro de conexão!");
         }
