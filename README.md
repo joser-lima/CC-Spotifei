@@ -57,4 +57,3 @@ https://www.youtube.com/watch?v=khtiy49VkeI
 
 ### Autor
 - José Reginaldo de Lima Junior
-- RA: 24.124.017-5
