@@ -40,9 +40,9 @@ Projeto desenvolvido em Java com interface gráfica (Swing) e PostgreSQL.
    - O banco é local
    - Execute o script sqlSpotifei.sql na pasta src no pgAdmin para criar as tabelas e registros.
      ```bash
-      String url = "jdbc:postgresql://localhost:5432/spotifei";
-       String user = "seu_usuario";
-        tring password = "sua_senha";
+            Connection conexao = DriverManager.getConnection(
+                    "jdbc:postgresql://localhost:5432/spotifei", 
+                    "seu_usuario", "sua_senha");
 4. Execute pelo Netbeans ou:
    ```bash
    cd dist
