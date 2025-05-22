@@ -1,10 +1,10 @@
-# Spotifei 🎵
+# Spotifei
 
 Projeto desenvolvido em Java com interface gráfica (Swing) e PostgreSQL.
 
 ---
 
-## ✅ Funcionalidades
+## Funcionalidades
 
 - **Login e Cadastro de Usuários**
 - **Buscar músicas** por nome (com LIKE)
@@ -19,7 +19,7 @@ Projeto desenvolvido em Java com interface gráfica (Swing) e PostgreSQL.
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 - Java (JDK 8)
 - PostgreSQL
@@ -29,7 +29,7 @@ Projeto desenvolvido em Java com interface gráfica (Swing) e PostgreSQL.
 
 ---
 
-## 🚀 Como Executar
+## Como Executar
 
 1. **Clone o repositório**
 
@@ -50,7 +50,7 @@ Projeto desenvolvido em Java com interface gráfica (Swing) e PostgreSQL.
 
 ---
 
-## 🎥 Link do video:
+## Link do video:
 https://www.youtube.com/watch?v=khtiy49VkeI
 
 ---
