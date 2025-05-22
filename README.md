@@ -38,7 +38,7 @@ Projeto desenvolvido em Java com interface gráfica (Swing) e PostgreSQL.
 2. Importe o projeto no Netbeans
 3. Configure a conexão com o banco
    - O banco é local
-   - Execute o script spotifei.sql incluído no projeto no pgAdmin para criar as tabelas e registros.
+   - Execute o script sqlSpotifei.sql na pasta src no pgAdmin para criar as tabelas e registros.
      ```bash
       String url = "jdbc:postgresql://localhost:5432/spotifei";
        String user = "seu_usuario";
